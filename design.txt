@@ -1,0 +1,233 @@
+Section 1: 数据存储
+1.1 非数据库存储
+  （1）用户头像 -- 数据存储1.1
+      用户头像以图片文件的形式存储
+      相对路径：项目根目录/profile/img
+      用户头像文件的文件名是用户表（数据存储2.1）中，对应用户的ID
+  
+  （2）书画作品 -- 数据存储1.2
+      用户作品以图片文件的形式存储
+      相对路径: 项目根目录/work/img
+      用户作品文件的文件名是作品表中（数据存储2.2），该作品对应的ID
+  
+  （3）对作品的描述 -- 数据存储1.3
+      上传用户对作品的描述，使用json文件存储
+      相对路径：项目根目录/work/description
+  
+  （4）对作品的评论 -- 数据存储1.4
+      用户对作品的评价使用json文件存储
+      相对路径：项目根目录/work/comment
+      对相同作品的评论存储在同一个文件中；
+      对不同作品的评论存储在不同的文件中。
+      该文件以作品的ID（数据存储2.2）为名进行存储，相关json格式定义如下：
+      [
+      	{  # 对该作品的第一条评论
+      	   "user_id": user_id, 		# 用户ID，数据存储2.1
+      	   "timestamp": timestamp, 	# 评论提交的系统时间
+      	   "comment": comment, 		# 评论具体内容
+      	},
+      	{  # 对该作品的第二条评论
+      	   "user_id": user_id, 		# 用户ID，数据存储2.1
+      	   "timestamp": timestamp, 	# 评论提交的系统时间
+      	   "comment": comment, 		# 评论具体内容
+      	},
+      	...
+        {  # 对该作品的第三条评论
+      	   "user_id": user_id, 		# 用户ID，数据存储2.1
+      	   "timestamp": timestamp, 	# 评论提交的系统时间
+      	   "comment": comment, 		# 评论具体内容
+      	}
+      ]  
+  
+  （5）某用户的所有评论 -- 数据存储1.5
+      某用户的所有评论使用json文件存储
+      相对路径：项目根目录/profile/comment
+      某用户的所有评论存储在同一个文件中；
+      该以用户的ID（数据存储2.1）为名进行存储，相关的json格式定义如下：
+      [
+      	{  # 该用户的第一条评论
+      	   "work_id": work_id, 		# 作品ID，数据存储2.2
+      	   "timestamp": timestamp, 	# 评论提交的系统时间
+      	   "comment": comment, 		# 评论具体内容
+      	},
+      	{  # 该用户的第二条评论
+      	   "work_id": work_id, 		# 作品ID，数据存储2.2
+      	   "timestamp": timestamp, 	# 评论提交的系统时间
+      	   "comment": comment, 		# 评论具体内容
+      	},
+      	...
+      	{  # 该用户的第三条评论
+      	   "work_id": work_id, 		# 作品ID，数据存储2.2
+      	   "timestamp": timestamp, 	# 评论提交的系统时间
+      	   "comment": comment, 		# 评论具体内容
+      	},
+      ] 
+
+1.2 关系数据库数据表
+  （1）用户表 表名：user_info -- 数据存储2.1
+      ID:   id 
+      账号:	login_name 
+      密码:  login_pwd
+      注册时间:        register_time
+      用户头像存储路径: profile_path
+  
+  （2）作品表 表名：work_info -- 数据存储2.2
+      ID:       id  
+      作品名称:  work_name
+      点赞数量: 	like_num 
+      收藏数量:  inv_num
+      作品上传时间:  upload_time
+      作品存储路径:  work_path
+  
+  （3）用户上传的作品 表名：possess_info -- 数据存储2.3
+      存储用户与其上传作品的关系
+      ID:       id
+      User_ID:  user_info.id  
+      作品ID:   work_info.id
+  
+  （4）用户赞的作品 表名：like_info -- 数据存储2.4
+      存储用户与其点赞作品的关系
+      ID：  
+      User_ID：  
+      作品ID：
+  
+  （5）用户收藏的作品 表名：collect_info -- 数据存储2.5
+      存储用户与其收藏作品的关系
+      ID：     	id
+      User_ID：	user_info.id  
+      作品ID：   work_info.id
+
+
+
+
+Section 2: 数据层封装方法
+2.1 非数据库存储的数据操作方法
+  （1）用户头像
+  （2）书画作品
+  （3）作品描述
+  （4）关于某作品的评论
+  （5）某用户的所有评论
+
+2.2 关系数据库数据表提供方法
+  （1）对表user_info的操作
+      a. List(String user_id) find_all_user()
+         从数据表user_info中查找所有的用户列表，返回用户id列表。
+      
+      b. String find_user_by_name(String login_name)
+         根据用户的登录名login_name返回用户id
+      
+      c. String find_login_name_by_id(String id)
+         根据用户id返回用户登录名
+      
+      d. String find_pwd_by_id(String id)
+         根据用户名返回用户注册密码
+      
+      e. timestamp find_register_time_by_id(String id)
+         根据用户名返回用户注册时间
+      
+      f. String find_user_path(String id)
+         根据用户名返回用户头像的存储路径（包含文件名）
+
+      g. int add_user(String user_id, 
+                      String login_name, 
+                      String login_pwd, 
+                      timestamp register_time,
+                      String profile_path)
+         根据参数，在表user_info（数据存储2.1）中新增一条记录。
+
+  （2）对表work_info的操作
+      a. list(String work_id) find_all_work()
+         从数据表work_info中查找所有的作品列表，返回作品id列表。
+
+      b. String find_work_path(String work_id)
+         根据作品id返回作品的存储路径（包含文件名）
+
+      c. String fine_work_name(String work_id)
+         根据作品id返回作品的名称
+
+      d. List(String work_id) select_work(String targetStr)
+         根据目标字符串，返回所有名字相似的作品名称
+
+      e. int work_like_num(String work_id)
+         根据作品的id返回作品点赞数目
+
+      f. int work_collect_num(String work_id)
+         根据作品id返回作品收藏的数目
+
+      g. int add_work(........)
+         新增作品
+
+  （3）对表possess_info的操作
+      a. list(String work_id) find_all_work_of_user(String user_id)
+         根据用户的id，返回该用户的所有作品的work_id组成的List
+
+      b. String find_work_possess(String work_id)
+         根据作品的id，返回上传该作品用户的user_id
+
+      c. int add_user_and_work(String user_id,
+                               String work_id)
+         作者上传作品以后，在possess_info表中新增一行记录。
+
+  （4）对表like_info的操作
+      a. list(String work_id) find_all_like_of_user(String user_id)
+         根据用户的id，返回该用户赞过的work_id组成的List
+
+      b. list(String user_id) find_work_like(String work_id)
+         根据作品的id，返回由赞过该作品的用户的user_id组成的列表
+
+      c. int add_user_and_work(String user_id,
+                               String work_id)
+         作者赞过一个作品以后，在like_info表中新增一行记录。
+
+  （5）对表collect_info的操作
+      a. list(String work_id) find_all_like_of_user(String user_id)
+         根据用户的id，返回该用户收藏过的work_id组成的List
+
+      b. list(String user_id) find_work_like(String work_id)
+         根据作品的id，返回由收藏过该作品的用户的user_id组成的列表
+
+      c. int add_user_and_work(String user_id,
+                               String work_id)
+         作者收藏过一个作品以后，在collect_info表中新增一行记录。
+
+
+
+
+Section 3: 业务层实现逻辑
+3.1 账号
+
+3.2 书画作品浏览
+
+3.3 作品发布
+
+3.4 点评作品
+
+3.5 查看用户
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
