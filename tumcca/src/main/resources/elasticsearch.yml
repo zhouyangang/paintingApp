@@ -1,0 +1,9 @@
+path:
+  logs: /var/log/elasticsearch
+  data: /var/data/elasticsearch
+
+cluster:
+  name: es0001
+
+node:
+  name: esnode0001

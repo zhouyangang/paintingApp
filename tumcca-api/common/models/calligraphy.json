@@ -1,0 +1,41 @@
+{
+  "name": "calligraphy",
+  "plural": "calligraphy",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "uploadDate": {
+      "type": "date",
+      "required": true
+    },
+    "owner": {
+      "type": "number",
+      "required": true
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "string"
+    },
+    "images": {
+      "type": [
+        "number"
+      ],
+      "required": true
+    },
+    "comments": {
+      "type": [
+        "string"
+      ]
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

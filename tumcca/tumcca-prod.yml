@@ -1,0 +1,149 @@
+# Distributed server id, global unique
+serverId: tumcca0001
+
+uploadPath: /var/uploads/tumcca
+
+domain: http://localhost:9080
+
+# Atmosphere client start delay in seconds
+clientServiceDelay: 30
+
+# Session timeout in seconds
+sessionTimeout: 1800
+
+# Picture cache out in seconds
+cacheTimeout: 30
+
+# Admin
+admin:
+  email: postmaster@tumcca.com
+  mobile: 88888888888
+  password: servicerequest
+
+# OSS configurations
+oss:
+  accessKeyId: XZo5JmPH8nBuI9Yp
+  secretAccessKey: 04jQSmTHEiadpvdToPT8AKU1I5Lc6n
+  endpoint: http://oss-cn-hangzhou-internal.aliyuncs.com
+  apiVersion: 2013-10-15
+  bucketName: tumcca
+  trashBucket: tumccatrash
+
+swagger:
+  resourcePackage: com.tumcca.api.resources
+  title: Tumcca
+  version: 1.0
+
+sundial:
+  thread-pool-size: 2
+  shutdown-on-unload: true
+  wait-on-shutdown: false
+  start-delay-seconds: 0
+  start-scheduler-on-load: true
+  global-lock-on-load: false
+  annotated-jobs-package-name: com.tumcca.api.job
+
+# Database settings.
+database:
+
+  # the name of your JDBC driver
+  driverClass: com.mysql.jdbc.Driver
+
+  # the username
+  user: tumcca
+
+  # the password
+  password: hww5433yw2ghs34bwg
+
+  # the JDBC URL
+  url: jdbc:mysql://rds492ud36zfunuz6t9nv.mysql.rds.aliyuncs.com:3306/tumcca?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;characterSetResults=utf8&amp;connectionCollation=utf8_general_ci
+
+  # any properties specific to your JDBC driver:
+  properties:
+    charSet: UTF-8
+
+  # the maximum amount of time to wait on an empty pool before throwing an exception
+  maxWaitForConnection: 5s
+
+  # the SQL query to run when validating a connection's liveness
+  validationQuery: "SELECT 1"
+
+  # the timeout before a connection validation queries fail
+  validationQueryTimeout: 3s
+
+  # the minimum number of connections to keep open
+  minSize: 2
+
+  # the maximum number of connections to keep open
+  maxSize: 32
+
+  # whether or not idle connections should be validated
+  checkConnectionWhileIdle: true
+
+  # the amount of time to sleep between runs of the idle connection validation, abandoned cleaner and idle pool resizing
+  evictionInterval: 10s
+
+  # the minimum amount of time an connection must sit idle in the pool before it is eligible for eviction
+  minIdleTime: 1 minute
+
+# use the simple server factory if you only want to run on a single port
+#server:
+#  type: simple
+#  connector:
+#    type: http
+#    port: 8080
+
+server:
+#  softNofileLimit: 1000
+#  hardNofileLimit: 1000
+  applicationConnectors:
+    - type: http
+      port: 9080
+    - type: https
+      port: 9443
+      keyStorePath: example.keystore
+      keyStorePassword: example
+      validateCerts: false
+# this requires the alpn-boot library on the JVM's boot classpath
+#    - type: spdy3
+#      port: 8445
+#      keyStorePath: example.keystore
+#      keyStorePassword: example
+#      validateCerts: false
+  adminConnectors:
+    - type: http
+      port: 9081
+    - type: https
+      port: 9444
+      keyStorePath: example.keystore
+      keyStorePassword: example
+      validateCerts: false
+
+jerseyClient:
+  minThreads: 1
+  maxThreads: 128
+  workQueueSize: 8
+  gzipEnabled: true
+  gzipEnabledForRequests: true
+  chunkedEncodingEnabled: true
+
+# Logging settings.
+logging:
+
+  # The default level of all loggers. Can be OFF, ERROR, WARN, INFO, DEBUG, TRACE, or ALL.
+  level: INFO
+
+  # Logger-specific levels.
+  loggers:
+
+    com.tumcca.api: DEBUG
+
+  appenders:
+    - type: console
+    - type: file
+      threshold: DEBUG
+      logFormat: "%-6level [%d{HH:mm:ss.SSS}] [%t] %logger{5} - %X{code} %msg %n"
+      currentLogFilename: /var/log/tumcca/tumcca.log
+      archivedLogFilenamePattern: /var/log/tumcca/tumcca-%d{yyyy-MM-dd}.log
+      archivedFileCount: 7
+      timeZone: UTC

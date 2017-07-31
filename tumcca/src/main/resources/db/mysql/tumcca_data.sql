@@ -1,0 +1,52 @@
+INSERT INTO TUMCCA_ERRORS (CODE, MESSAGE) VALUES (1001, "username or password do NOT match");
+INSERT INTO TUMCCA_ERRORS (CODE, MESSAGE) VALUES (1002, "Session timeout or you've already signed out");
+INSERT INTO TUMCCA_ERRORS (CODE, MESSAGE) VALUES (1003, "user NOT found");
+INSERT INTO TUMCCA_ERRORS (CODE, MESSAGE) VALUES (1004, "artist NOT found");
+INSERT INTO TUMCCA_ERRORS (CODE, MESSAGE) VALUES (1005, "the email has been registered");
+INSERT INTO TUMCCA_ERRORS (CODE, MESSAGE) VALUES (1006, "the mobile has been registered");
+INSERT INTO TUMCCA_ERRORS (CODE, MESSAGE) VALUES (1007, "An email or mobile should have been input");
+INSERT INTO TUMCCA_ERRORS (CODE, MESSAGE) VALUES (1008, "object NOT found");
+INSERT INTO TUMCCA_ERRORS (CODE, MESSAGE) VALUES (1009, "can NOT delete picture directly");
+INSERT INTO TUMCCA_ERRORS (CODE, MESSAGE) VALUES (1010, "can NOT restore available picture");
+INSERT INTO TUMCCA_ERRORS (CODE, MESSAGE) VALUES (1011, "log size too big");
+INSERT INTO TUMCCA_ERRORS (CODE, MESSAGE) VALUES (1012, "the picture may be removed from OSS");
+INSERT INTO TUMCCA_ERRORS (CODE, MESSAGE) VALUES (1013, "the resource needs ADMIN authority to access");
+INSERT INTO TUMCCA_ERRORS (CODE, MESSAGE) VALUES (1014, "the tag has been registered");
+INSERT INTO TUMCCA_ERRORS (CODE, MESSAGE) VALUES (1015, "the category has been registered under the same parent category");
+INSERT INTO TUMCCA_ERRORS (CODE, MESSAGE) VALUES (1016, "there are children under the category, please remove all of the children first");
+INSERT INTO TUMCCA_ERRORS (CODE, MESSAGE) VALUES (1017, "no pictures for the works");
+INSERT INTO TUMCCA_ERRORS (CODE, MESSAGE) VALUES (1018, "invalid works picture id exists");
+INSERT INTO TUMCCA_ERRORS (CODE, MESSAGE) VALUES (1019, "can NOT delete works directly");
+INSERT INTO TUMCCA_ERRORS (CODE, MESSAGE) VALUES (1020, "can NOT add works before you finished your profile");
+INSERT INTO TUMCCA_ERRORS (CODE, MESSAGE) VALUES (1021, "can NOT update works before you finished your profile");
+INSERT INTO TUMCCA_ERRORS (CODE, MESSAGE) VALUES (1022, "can NOT trash works before you finished your profile");
+INSERT INTO TUMCCA_ERRORS (CODE, MESSAGE) VALUES (1023, "can NOT restore works before you finished your profile");
+INSERT INTO TUMCCA_ERRORS (CODE, MESSAGE) VALUES (1024, "can NOT delete works before you finished your profile");
+INSERT INTO TUMCCA_ERRORS (CODE, MESSAGE) VALUES (1025, "page should be greater than 0");
+INSERT INTO TUMCCA_ERRORS (CODE, MESSAGE) VALUES (1026, "page size should be greater than 0 and less than 101");
+INSERT INTO TUMCCA_ERRORS (CODE, MESSAGE) VALUES (1027, "category NOT found");
+INSERT INTO TUMCCA_ERRORS (CODE, MESSAGE) VALUES (1028, "the specified user is not supposed to be notified");
+INSERT INTO TUMCCA_ERRORS (CODE, MESSAGE) VALUES (1029, "the specified user has already been notified");
+INSERT INTO TUMCCA_ERRORS (CODE, MESSAGE) VALUES (1030, "the principal should be the follower");
+INSERT INTO TUMCCA_ERRORS (CODE, MESSAGE) VALUES (1031, "can NOT follow self");
+INSERT INTO TUMCCA_ERRORS (CODE, MESSAGE) VALUES (1032, "You have already followed the guy");
+INSERT INTO TUMCCA_ERRORS (CODE, MESSAGE) VALUES (1033, "The follower you would like to follow does NOT exist");
+INSERT INTO TUMCCA_ERRORS (CODE, MESSAGE) VALUES (1034, "only the follower or the following could unfollow the relationship");
+INSERT INTO TUMCCA_ERRORS (CODE, MESSAGE) VALUES (1035, "The follower does NOT exist");
+INSERT INTO TUMCCA_ERRORS (CODE, MESSAGE) VALUES (1036, "The following does NOT exist");
+INSERT INTO TUMCCA_ERRORS (CODE, MESSAGE) VALUES (1037, "You have NOT followed the guy");
+
+INSERT INTO TUMCCA_ERRORS (CODE, MESSAGE) VALUES (1100, 'can NOT add album before you finished your profile');
+INSERT INTO TUMCCA_ERRORS (CODE, MESSAGE) VALUES (1101, 'can NOT update album before you finished your profile');
+INSERT INTO TUMCCA_ERRORS (CODE, MESSAGE) VALUES (1102, 'can NOT delete album before you finished your profile');
+INSERT INTO TUMCCA_ERRORS (CODE, MESSAGE) VALUES (1103, 'can NOT get album before you finished your profile');
+INSERT INTO TUMCCA_ERRORS (`CODE`, `MESSAGE`) VALUES ('1104', 'can NOT move the works of a album before you finished your profile');
+INSERT INTO TUMCCA_ERRORS (`CODE`, `MESSAGE`) VALUES ('1105', 'can NOT load the works of a album before you finished your profile');
+INSERT INTO TUMCCA_ERRORS (`CODE`, `MESSAGE`) VALUES ('1106', 'can NOT do any operation for follow  before you finished your profile');
+
+
+INSERT INTO TUMCCA_WORKS_TAGS (NAME) VALUES ("颜体");
+INSERT INTO TUMCCA_WORKS_TAGS (NAME) VALUES ("柳体");
+
+INSERT INTO TUMCCA_WORKS_CATEGORIES (PATH, NAME) VALUES ("/", "书法");
+INSERT INTO TUMCCA_WORKS_CATEGORIES (PATH, NAME) VALUES ("/", "绘画");
