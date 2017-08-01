@@ -78,6 +78,11 @@ Section 2: 数据层封装方法
      b. work_info_entity find_work_by_name(String work_name)
         根据作品名称，返回作品信息实例类
 
+     c. List<work_info_entity> find_work_as_demand(String work_id,
+                                                   int num)
+        对作品进行排序，从work_id的作品以后读出num个作品，组成List
+        如果没有work_id,则work_id为最新的一个作品
+
       
   （3）用户上传的作品 表名：possess_info
      作者与作品关系实例类 possess_info_entity: 表possess_info中的一条记录
@@ -125,20 +130,321 @@ Section 2: 数据层封装方法
 
 Section 3: 业务层实现逻辑
 3.1 账号
+  （1）子功能点：账号注册	
+      a. 注册账号
+      b. API名称 
+         	"/api/sign-up"	
+      c. 是否需要登录：
+         	否
+      e. HTTP方法:
+      		POST 
+      f. 请求参数
+       		登录名
+       		密码
+       		系统时间
+       		用户头像图片
+      g. 返回HTTPP状态码。
+         	成功： 200
+         	失败： 400
+      h. 返回内容
+      		无
+  
+  （2）子功能点：登录	
+      a. 输入用户名和密码登录
+      b. API名称 
+      		"/api/sign-in"	
+      c. 是否需要登录：
+      		否
+      e. HTTP方法
+      		GET
+      f. 请求参数
+            用户名
+            密码
+      g. 返回HTTPP状态码。
+         成功： 200
+         失败： 400
+      h. 返回内容
+      		用户头像
+      		上传作品列表
+      		点赞作品列表
+      		收藏作品列表
+
+  （3）子功能点：注销	
+      a. 取消登录
+      b. API名称 
+      		"/api/sign-out"	
+      c. 是否需要登录：
+      		否
+      e. HTTP方法
+      		GET
+      f. 请求参数
+      		无
+      g. 返回HTTPP状态码。
+         成功： 200
+         失败： 400
+      h. 返回内容
+      		无
+
+  （4）子功能点：上传用户信息	
+      a. 新建一个用户信息
+      b. API名称 
+      		"/api/artists/profile"	
+      c. 是否需要登录：
+      		是
+      e. HTTP方法
+      		PUT
+      f. 请求参数
+      		用户头像图片
+      g. 返回HTTPP状态码。
+         成功： 200
+         失败： 400
+      h. 返回内容
+      		无
+
+  （5）子功能点：获取用户信息			
+      a. 获取用户性别，昵称等信息
+      b. API名称 
+      		"/api/artists/profile"	
+      c. 是否需要登录：
+      		是
+      e. HTTP方法
+      		GET
+      f. 请求参数
+      		无
+      g. 返回HTTPP状态码。
+         成功： 200
+         失败： 400
+      h. 返回内容
+      		用户信息
+
+  （6）子功能点：上传用户头像			
+      a. 向服务器上传头像
+      b. API名称 
+      		"/api/avatars/upload"	
+      c. 是否需要登录：
+      		是
+      e. HTTP方法
+      		PUT
+      f. 请求参数
+      		用户头像图片
+      g. 返回HTTPP状态码。
+         成功： 200
+         失败： 400
+      h. 返回内容
+
 
 3.2 书画作品浏览
+  （1）子功能点：浏览所有书画作品	      
+      a. 获取全部的作品信息，包括作品名称，发布人信息，评论数，点赞数等	
+      b. API名称 
+      		"/api/works/homepage/page/"	
+      c. 是否需要登录：
+      		否
+      e. HTTP方法
+      		GET
+      f. 请求参数
+      		10
+      g. 返回HTTPP状态码。
+         成功： 200
+         失败： 400
+      h. 返回内容
+      		前10个作品列表
+
+  （2）子功能点：浏览书画作品详情		
+      a. 大图方式浏览作品，并可以查看和添加评论
+      b. API名称 
+      		"/api/works/homepage/page/"	
+      c. 是否需要登录：
+      		是
+      e. HTTP方法
+      		GET
+      f. 请求参数
+      		作品的ID
+      g. 返回HTTPP状态码。
+         成功： 200
+         失败： 400
+      h. 返回内容
+            作品的作者
+      		作品描述信息
+      		作品的点赞人数
+      		作品的收藏人数
+
+  （3）子功能点：搜索作品			
+      a. 通过关键字搜索作品名称
+      b. API名称 
+      		"/api/works/search"	
+      c. 是否需要登录：
+      		是
+      e. HTTP方法
+      		GET
+      f. 请求参数
+      		搜索关键字
+      g. 返回HTTPP状态码。
+         成功： 200
+         失败： 400
+      h. 返回内容
+      		作品列表
+
 
 3.3 作品发布
+  （1）子功能点：发布作品			
+      a. 上传一张作品，并配备文字说明
+      b. API名称 
+      		"/api/works"	
+      c. 是否需要登录：
+      		是
+      e. HTTP方法
+      		POST
+      f. 请求参数
+
+      g. 返回HTTPP状态码。
+         成功： 200
+         失败： 400
+      h. 返回内容
+      		作品列表
+
+  （2）子功能点：上传图片			
+      a. 上传一张图片
+      b. API名称 
+      		"/api/pictures/upload"	
+      c. 是否需要登录：
+      		是
+      e. HTTP方法
+      		POST
+      f. 请求参数
+      		作品图片
+      g. 返回HTTPP状态码。
+         成功： 200
+         失败： 400
+      h. 返回内容
+
 
 3.4 点评作品
+  （1）子功能点：收藏作品				
+      a. 对作品进行收藏
+      b. API名称 
+      		"/api/collect"	
+      c. 是否需要登录：
+      		是
+      e. HTTP方法：
+      		POST
+      f. 请求参数
+      g. 返回HTTPP状态码。
+         成功： 200
+         失败： 400
+      h. 返回内容
+
+
+  （2）子功能点：取消收藏			
+      a. 取消收藏
+      b. API名称 
+      		"/api/collect"	
+      c. 是否需要登录：
+      		是
+      e. HTTP方法：DELETE
+      f. 请求参数
+      g. 返回HTTPP状态码。
+         成功： 200
+         失败： 400
+      h. 返回内容
+
+
+  （3）子功能点：评论作品			
+      a. 给作品添加评论
+      b. API名称 
+      		"/api/comment"	
+      c. 是否需要登录：
+      		是
+      e. HTTP方法
+      f. 请求参数
+      g. 返回HTTPP状态码。
+         成功： 200
+         失败： 400
+      h. 返回内容
+
+
+  （4）子功能点：喜欢				
+      a. 点赞
+      b. API名称 
+      		"/api/like"	
+      c. 是否需要登录：
+      		是
+      e. HTTP方法：
+      		POST
+      f. 请求参数
+      g. 返回HTTPP状态码。
+         成功： 200
+         失败： 400
+      h. 返回内容
+
+
+  （5）子功能点：取消喜欢		
+      a. 取消点赞
+      b. API名称 
+      		"/api/like"	
+      c. 是否需要登录：
+      		是
+      e. HTTP方法：
+      		DELETE
+      f. 请求参数
+      g. 返回HTTPP状态码。
+         成功： 200
+         失败： 400
+      h. 返回内容
+
 
 3.5 查看用户
+  （1）子功能点：用户信息浏览			
+      a. 略
+      b. API名称 
+      		"/api/artists/" + id + "/profile"	
+      c. 是否需要登录：
+      		是
+      e. HTTP方法
+      f. 请求参数
+      g. 返回HTTPP状态码。
+         成功： 200
+         失败： 400
+      h. 返回内容
 
 
+  （2）子功能点：浏览用户发布的作品		 	
+      a. 略
+      b. API名称 
+      		"/api/artists/+id/works"	
+      c. 是否需要登录：
+      		是
+      e. HTTP方法
+      f. 请求参数
+      g. 返回HTTPP状态码。
+         成功： 200
+         失败： 400
+      h. 返回内容
 
 
+  （3）子功能点：浏览用户收藏的作品		 	
+      a. 略
+      b. API名称 
+      		"/api/artists/+id/collect"	
+      c. 是否需要登录：
+      		是
+      e. HTTP方法
+      f. 请求参数
+      g. 返回HTTPP状态码。
+         成功： 200
+         失败： 400
+      h. 返回内容
 
 
-
-
-
+  （4）子功能点：浏览用户喜欢的作品		 	
+      a. 略
+      b. API名称 
+      		"/api/artists/+id/likes"	
+      c. 是否需要登录：
+      		是
+      e. HTTP方法
+      f. 请求参数
+      g. 返回HTTPP状态码。
+         成功： 200
+         失败： 400
+      h. 返回内容
