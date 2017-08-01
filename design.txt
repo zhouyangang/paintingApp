@@ -36,9 +36,9 @@ Section 1: 数据存储
   
   （4）用户赞的作品 表名：like_info -- 数据存储2.4
       存储用户与其点赞作品的关系
-      ID：  
-      User_ID：  
-      作品ID：
+      ID：  		id
+      User_ID：	user_info.id  
+      作品ID：   work_info.id
   
   （5）用户收藏的作品 表名：collect_info -- 数据存储2.5
       存储用户与其收藏作品的关系
@@ -58,6 +58,67 @@ Section 1: 数据存储
 
 
 Section 2: 数据层封装方法
+2.1 存储文件的操作
+
+2.2 数据表的操作
+  （1）用户表 表名：user_info
+     用户信息实例类 user_info_entity：表user_info中的一条记录
+     a. user_info_entity find_user_by_id(String user_id)
+        根据用户id，返回用户信息实例类
+
+     b. user_info_entity find_user_by_name(String user_name)
+        根据用户登录名，返回用户信息实例类
+
+
+  （2）作品表 表名：work_info
+     作品信息实例类 work_info_entity：表work_info中的一条记录
+     a. work_info_entity find_work_by_id(String work_id)
+        根据作品id，返回作品信息实例类
+
+     b. work_info_entity find_work_by_name(String work_name)
+        根据作品名称，返回作品信息实例类
+
+      
+  （3）用户上传的作品 表名：possess_info
+     作者与作品关系实例类 possess_info_entity: 表possess_info中的一条记录
+     a. possess_info_entity find_author(work_id)
+        根据作品的id，返回表possess_info中符合条件的实例类
+
+     b. List<possess_info_entity> find_work_by_author(user_id)
+        根据作者的id，返回由该作者上传作品的id所代表的实例类组成的列表
+        list保持最新的元素在最前面。
+
+
+  （4）用户赞的作品 表名：like_info
+     作者与作品点赞关系实例类 like_info_entity: 表like_info中的一条记录
+     a. list<like_info_entity> who_likes(work_id)
+        根据作品的id，返回有哪些用户喜欢该作品
+        list保持最新的元素在最前面。
+
+     b. List<like_info_entity> likes_what(user_id)
+        根据用户的id，返回该用户喜欢了哪些作品
+        list保持最新的元素在最前面。
+
+  （5）用户收藏的作品 表名：collect_info
+     作者与作品收藏关系实例类 collect_info_entity: 表collect_info中的一条记录
+     a. list<collect_info_entity> who_collects(work_id)
+        根据作品的id，返回有哪些用户收藏了该作品
+        list保持最新的元素在最前面。
+
+     b. List<like_info_entity> collects_what(user_id)
+        根据用户的id，返回该用户收藏了哪些作品
+        list保持最新的元素在最前面。
+
+      
+  （6）用户与作品的评论关系 表明：comment_info
+     作者与作品评论关系实例类 comment_info_entity: 表comment_info中的一条记录
+     a. list<collect_info_entity> who_comments(work_id)
+        根据作品的id，返回有哪些用户评论了该作品
+        list保持最新的元素在最前面。
+
+     b. List<like_info_entity> commnets_what(user_id)
+        根据用户的id，返回该用户评论了哪些作品
+        list保持最新的元素在最前面。
 
 
 
@@ -72,3 +133,12 @@ Section 3: 业务层实现逻辑
 3.4 点评作品
 
 3.5 查看用户
+
+
+
+
+
+
+
+
+
