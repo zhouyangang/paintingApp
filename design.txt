@@ -129,6 +129,26 @@ Section 2: 数据层封装方法
 
 
 Section 3: 业务层实现逻辑
+
+所有的response body 统一格式如下：
+{ 
+	"status": "000",
+	"message":null,
+	"result": 
+}
+status		000:成功，001:失败
+message		错误提示	
+result		成功时，返回的业务数据
+
+HTTP状态码，按照HTTP标准状态码，如下：
+200		successful
+400		bad request
+500		Internal server exception
+
+
+除了注册，登录的API，其他任何API，都需要在
+HTTP请求的 header中携带 Authorization, 值为登录用户ID
+
 3.1 账号
   （1）子功能点：账号注册	
       a. 注册账号
@@ -137,17 +157,15 @@ Section 3: 业务层实现逻辑
       c. 是否需要登录：
          	否
       e. HTTP方法:
-      		POST 
+      		GET 
       f. 请求参数
-       		登录名
-       		密码
-       		系统时间
-       		用户头像图片
+       	phone		手机号
+       	password	密码
       g. 返回HTTPP状态码。
          	成功： 200
          	失败： 400
       h. 返回内容
-      		无
+	统一Response Body
   
   （2）子功能点：登录	
       a. 输入用户名和密码登录
@@ -156,18 +174,26 @@ Section 3: 业务层实现逻辑
       c. 是否需要登录：
       		否
       e. HTTP方法
-      		GET
+      		POST
       f. 请求参数
-            用户名
-            密码
+         phone   	用户名
+         passsword   	密码
       g. 返回HTTPP状态码。
          成功： 200
          失败： 400
       h. 返回内容
-      		用户头像
-      		上传作品列表
-      		点赞作品列表
-      		收藏作品列表
+{
+  "status": "000",
+  "message": null,
+  "result":{
+	id(Long)		用户ID      	
+	profile_url(String)	用户头像
+	gender(Int, 0:男，1:女)	性别
+	alias(String)		昵称
+	description(String)	介绍
+	}
+}
+
 
   （3）子功能点：注销	
       a. 取消登录
@@ -183,7 +209,12 @@ Section 3: 业务层实现逻辑
          成功： 200
          失败： 400
       h. 返回内容
-      		无
+    {
+	"status":"000",
+	"message":null,
+	"result":null
+    }
+
 
   （4）子功能点：上传用户信息	
       a. 新建一个用户信息
@@ -193,13 +224,19 @@ Section 3: 业务层实现逻辑
       		是
       e. HTTP方法
       		PUT
-      f. 请求参数
-      		用户头像图片
+      f. 请求参数 request body
+	gender(Int, 0:男，1:女)	性别
+	alias(String)		昵称
+	description(String)	介绍
       g. 返回HTTPP状态码。
          成功： 200
          失败： 400
       h. 返回内容
-      		无
+      {
+	"status":"000",
+	"message":null,
+	"result":null
+      }
 
   （5）子功能点：获取用户信息			
       a. 获取用户性别，昵称等信息
@@ -215,7 +252,17 @@ Section 3: 业务层实现逻辑
          成功： 200
          失败： 400
       h. 返回内容
-      		用户信息
+ {
+  "status": "000",
+  "message": null,
+  "result":{
+	id(Long)		用户ID      	
+	profile_url(String)	用户头像
+	gender(Int, 0:男，1:女)	性别
+	alias(String)		昵称
+	description(String)	介绍
+	}
+}
 
   （6）子功能点：上传用户头像			
       a. 向服务器上传头像
@@ -224,66 +271,102 @@ Section 3: 业务层实现逻辑
       c. 是否需要登录：
       		是
       e. HTTP方法
-      		PUT
+      		GET
       f. 请求参数
       		用户头像图片
       g. 返回HTTPP状态码。
          成功： 200
          失败： 400
       h. 返回内容
-
+{
+	"status":"000",
+	"message":null,
+	// result为 用户头像的URL
+	"result":"http://xxxxx"
+}
 
 3.2 书画作品浏览
-  （1）子功能点：浏览所有书画作品	      
+  （1）子功能点：浏览搜索书画作品	      
       a. 获取全部的作品信息，包括作品名称，发布人信息，评论数，点赞数等	
       b. API名称 
-      		"/api/works/homepage/page/"	
+      		"/api/works/page/"	
       c. 是否需要登录：
       		否
       e. HTTP方法
       		GET
       f. 请求参数
-      		10
+      	page(Int)		当前页码(从1开始)
+	size(Int)		每页条数
+	type(Int)		获取的作品类型
+
+		1:	本人作品
+		2:	赞过的作品
+		3:	收藏的作品
+	work-name(String)	作品名称，可以模糊匹配
       g. 返回HTTPP状态码。
          成功： 200
          失败： 400
       h. 返回内容
-      		前10个作品列表
+{
+	"status": "000",
+	"message":null,
+	"result": {
+		"totalRows": 总行数
+		"totalPage": 总页数
+		"currentPage": 当前页码
+		"numPerPage": 一页显示的记录数
+		"resultList":[
+			{
+			"ID"(Long)      	作品id  
+			"author"(String)	作品作者昵称
+      			"work_name"(String)	作品名称	
+      		 	"like_num"(Int)		点赞数量
+       			"inv_num"(Int)		收藏数量
+      		  	"upload_time"(String)   作品上传时间  日期格式： 2017-07-31 08:00:00
+      		  	"work_path"(String)	作品存储url
+      			"work_description"(String) 作品的描述信息
+			}
+			......
+		]
+	}
+}
+ 
 
   （2）子功能点：浏览书画作品详情		
       a. 大图方式浏览作品，并可以查看和添加评论
       b. API名称 
-      		"/api/works/homepage/page/"	
+      		"/api/works/{workID}"	
       c. 是否需要登录：
       		是
       e. HTTP方法
       		GET
       f. 请求参数
-      		作品的ID
+      	workID		作品的ID
       g. 返回HTTPP状态码。
          成功： 200
          失败： 400
       h. 返回内容
-            作品的作者
-      		作品描述信息
-      		作品的点赞人数
-      		作品的收藏人数
-
-  （3）子功能点：搜索作品			
-      a. 通过关键字搜索作品名称
-      b. API名称 
-      		"/api/works/search"	
-      c. 是否需要登录：
-      		是
-      e. HTTP方法
-      		GET
-      f. 请求参数
-      		搜索关键字
-      g. 返回HTTPP状态码。
-         成功： 200
-         失败： 400
-      h. 返回内容
-      		作品列表
+{
+	"status":"000",
+	"message":null,
+	"result": {
+			"ID"(Long)      	作品id  
+			"author"(String)	作品作者昵称 
+     			"work_name"(String)	作品名称	
+      		 	"like_num"(Int)		点赞数量
+       			"inv_num"(Int)		收藏数量
+      		  	"upload_time"(String)   作品上传时间  日期格式： 2017-07-31 08:00:00
+      		  	"work_path"(String)	作品存储url
+      			"work_description"(String) 作品的描述信息
+			"comments": [
+				{
+				   "username"(String)	评论人
+				   "comment"(String)	评论
+				},
+				.....
+			]
+	}
+}
 
 
 3.3 作品发布
