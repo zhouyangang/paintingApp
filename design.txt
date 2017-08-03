@@ -14,8 +14,10 @@ Section 1: 数据存储
 1.2 关系数据库数据表
   （1）用户表 表名：user_info -- 数据存储2.1
       ID:   id 
-      账号:	login_name 
+      账号:	login_name   // 即手机号
       密码:  login_pwd
+      昵称:  alias_name
+      用户介绍: description 
       注册时间:        register_time
       用户头像存储路径: profile_path
   
@@ -130,24 +132,24 @@ Section 2: 数据层封装方法
 
 Section 3: 业务层实现逻辑
 
-所有的response body 统一格式如下：
-{ 
-	"status": "000",
-	"message":null,
-	"result": 
-}
-status		000:成功，001:失败
-message		错误提示	
-result		成功时，返回的业务数据
+3.1 约定
+  （1）所有的response body 统一格式如下：
+      { 
+        	"status": "000",
+        	"message":null,
+        	"result": 
+      }
+      status		000:成功，001:失败
+      message		错误提示	
+      result		成功时，返回的业务数据
 
-HTTP状态码，按照HTTP标准状态码，如下：
-200		successful
-400		bad request
-500		Internal server exception
+  （2）HTTP状态码，按照HTTP标准状态码，如下：
+      200		successful
+      400		bad request
+      500		Internal server exception
 
-
-除了注册，登录的API，其他任何API，都需要在
-HTTP请求的 header中携带 Authorization, 值为登录用户ID
+  （3）除了注册与登录的API外，其他任何API，都需要在HTTP请求的header中
+      携带 Authorization信息, 值为登录用户ID
 
 3.1 账号
   （1）子功能点：账号注册	
@@ -165,7 +167,7 @@ HTTP请求的 header中携带 Authorization, 值为登录用户ID
          	成功： 200
          	失败： 400
       h. 返回内容
-	统一Response Body
+	       统一Response Body
   
   （2）子功能点：登录	
       a. 输入用户名和密码登录
@@ -182,17 +184,18 @@ HTTP请求的 header中携带 Authorization, 值为登录用户ID
          成功： 200
          失败： 400
       h. 返回内容
-{
-  "status": "000",
-  "message": null,
-  "result":{
-	id(Long)		用户ID      	
-	profile_url(String)	用户头像
-	gender(Int, 0:男，1:女)	性别
-	alias(String)		昵称
-	description(String)	介绍
-	}
-}
+          {
+              "status": "000",
+              "message": null,
+              "result":
+              {
+                	id(Long)		             // 用户ID      	
+                	profile_url(String)	     // 用户头像
+                	gender(Int, 0:男，1:女)	 // 性别
+                	alias(String)		         // 昵称
+                	description(String)	     // 介绍
+            	}
+          }
 
 
   （3）子功能点：注销	
@@ -209,11 +212,11 @@ HTTP请求的 header中携带 Authorization, 值为登录用户ID
          成功： 200
          失败： 400
       h. 返回内容
-    {
-	"status":"000",
-	"message":null,
-	"result":null
-    }
+          {
+            	"status":"000",
+            	"message":null,
+            	"result":null
+          }
 
 
   （4）子功能点：上传用户信息	
@@ -225,18 +228,18 @@ HTTP请求的 header中携带 Authorization, 值为登录用户ID
       e. HTTP方法
       		PUT
       f. 请求参数 request body
-	gender(Int, 0:男，1:女)	性别
-	alias(String)		昵称
-	description(String)	介绍
+        	gender(Int, 0:男，1:女)	性别
+        	alias(String)		昵称
+        	description(String)	介绍
       g. 返回HTTPP状态码。
          成功： 200
          失败： 400
       h. 返回内容
-      {
-	"status":"000",
-	"message":null,
-	"result":null
-      }
+          {
+            	"status":"000",
+            	"message":null,
+            	"result":null
+          }
 
   （5）子功能点：获取用户信息			
       a. 获取用户性别，昵称等信息
@@ -252,17 +255,18 @@ HTTP请求的 header中携带 Authorization, 值为登录用户ID
          成功： 200
          失败： 400
       h. 返回内容
- {
-  "status": "000",
-  "message": null,
-  "result":{
-	id(Long)		用户ID      	
-	profile_url(String)	用户头像
-	gender(Int, 0:男，1:女)	性别
-	alias(String)		昵称
-	description(String)	介绍
-	}
-}
+          {
+              "status": "000",
+              "message": null,
+              "result":
+              {
+                	id(Long)		            // 用户ID      	
+                	profile_url(String)	    // 用户头像
+                	gender(Int, 0:男，1:女)	// 性别
+                	alias(String)		        // 昵称
+                	description(String)	    // 介绍
+            	}
+          }
 
   （6）子功能点：上传用户头像			
       a. 向服务器上传头像
@@ -271,19 +275,18 @@ HTTP请求的 header中携带 Authorization, 值为登录用户ID
       c. 是否需要登录：
       		是
       e. HTTP方法
-      		GET
+      		POST
       f. 请求参数
       		用户头像图片
       g. 返回HTTPP状态码。
          成功： 200
          失败： 400
       h. 返回内容
-{
-	"status":"000",
-	"message":null,
-	// result为 用户头像的URL
-	"result":"http://xxxxx"
-}
+          {
+            	"status":"000",
+            	"message":null,
+            	"result":"http://xxxxx"  // result为 用户头像的URL
+          }
 
 3.2 书画作品浏览
   （1）子功能点：浏览搜索书画作品	      
@@ -295,41 +298,46 @@ HTTP请求的 header中携带 Authorization, 值为登录用户ID
       e. HTTP方法
       		GET
       f. 请求参数
-      	page(Int)		当前页码(从1开始)
-	size(Int)		每页条数
-	type(Int)		获取的作品类型
-
-		1:	本人作品
-		2:	赞过的作品
-		3:	收藏的作品
-	work-name(String)	作品名称，可以模糊匹配
+      	 page(Int)		当前页码(从1开始)
+	       size(Int)		每页条数
+	       type(Int)		获取的作品类型
+            取值范围: 1:  本人作品
+                     2:  赞过的作品
+                     3:  收藏的作品
+		      work-name(String)	作品名称，可以模糊匹配
       g. 返回HTTPP状态码。
          成功： 200
          失败： 400
       h. 返回内容
-{
-	"status": "000",
-	"message":null,
-	"result": {
-		"totalRows": 总行数
-		"totalPage": 总页数
-		"currentPage": 当前页码
-		"numPerPage": 一页显示的记录数
-		"resultList":[
-			{
-			"ID"(Long)      	作品id  
-			"author"(String)	作品作者昵称
-      			"work_name"(String)	作品名称	
-      		 	"like_num"(Int)		点赞数量
-       			"inv_num"(Int)		收藏数量
-      		  	"upload_time"(String)   作品上传时间  日期格式： 2017-07-31 08:00:00
-      		  	"work_path"(String)	作品存储url
-      			"work_description"(String) 作品的描述信息
-			}
-			......
-		]
-	}
-}
+          {
+            	"status": "000",
+            	"message":null,
+            	"result": 
+              {
+              		"totalRows": 总行数
+              		"totalPage": 总页数
+              		"currentPage": 当前页码
+              		"numPerPage": 一页显示的记录数
+              		"resultList":[
+              			// 第一个作品
+                    {
+                  			"ID"(Long)      	作品id  
+                  			"author"(String)	作品作者昵称
+                        "work_name"(String)	作品名称	
+                        "like_num"(Int)		点赞数量
+                        "inv_num"(Int)		收藏数量
+                        "upload_time"(String)   作品上传时间  日期格式： 2017-07-31 08:00:00
+                        "work_path"(String)	作品存储url
+                        "work_description"(String) 作品的描述信息
+              			}
+              			// 第二个作品
+                    {
+                       ....
+                    }
+                    ...
+              		]
+            	}
+          }
  
 
   （2）子功能点：浏览书画作品详情		
@@ -341,32 +349,35 @@ HTTP请求的 header中携带 Authorization, 值为登录用户ID
       e. HTTP方法
       		GET
       f. 请求参数
-      	workID		作品的ID
+      	 work_id	// 作品的ID
       g. 返回HTTPP状态码。
          成功： 200
          失败： 400
       h. 返回内容
-{
-	"status":"000",
-	"message":null,
-	"result": {
-			"ID"(Long)      	作品id  
-			"author"(String)	作品作者昵称 
-     			"work_name"(String)	作品名称	
-      		 	"like_num"(Int)		点赞数量
-       			"inv_num"(Int)		收藏数量
-      		  	"upload_time"(String)   作品上传时间  日期格式： 2017-07-31 08:00:00
-      		  	"work_path"(String)	作品存储url
-      			"work_description"(String) 作品的描述信息
-			"comments": [
-				{
-				   "username"(String)	评论人
-				   "comment"(String)	评论
-				},
-				.....
-			]
-	}
-}
+          {
+            	"status":"000",
+            	"message":null,
+            	"result": 
+              {
+            			"ID"(Long)      	          // 作品id  
+            			"author"(String)	          // 作品作者昵称 
+                 	"work_name"(String) 	      // 作品名称	
+                  "like_num"(Int)		          // 点赞数量
+                  "inv_num"(Int)		          // 收藏数量
+                  "upload_time"(String)       // 作品上传时间  日期格式： 2017-07-31 08:00:00
+                  "work_path"(String)	        // 作品存储url
+                  "work_description"(String)  // 作品的描述信息
+            			"comments": [
+            				// 第一条评论
+                    {
+            				   "username"(String)	评论人
+            				   "comment"(String)	评论
+            				},
+            				// 第二条评论
+                    ......
+            			]
+            	}
+          }
 
 
 3.3 作品发布
@@ -379,12 +390,17 @@ HTTP请求的 header中携带 Authorization, 值为登录用户ID
       e. HTTP方法
       		POST
       f. 请求参数
-
+          作品图片
+          文字描述
       g. 返回HTTPP状态码。
          成功： 200
          失败： 400
       h. 返回内容
-      		作品列表
+      	  {
+              "status":"000",
+              "message":null,
+              "result": "http://xxxxx"  // result为作品的URL
+          }
 
   （2）子功能点：上传图片			
       a. 上传一张图片
@@ -400,6 +416,12 @@ HTTP请求的 header中携带 Authorization, 值为登录用户ID
          成功： 200
          失败： 400
       h. 返回内容
+          {
+              "status":"000",
+              "message":null,
+              "result": "http://xxxxx"  // result为作品的URL
+          }
+
 
 
 3.4 点评作品
@@ -412,10 +434,16 @@ HTTP请求的 header中携带 Authorization, 值为登录用户ID
       e. HTTP方法：
       		POST
       f. 请求参数
+          作品的work_id
       g. 返回HTTPP状态码。
          成功： 200
          失败： 400
       h. 返回内容
+        {
+            "status":"000",
+            "message":null,
+            "result": 
+        }
 
 
   （2）子功能点：取消收藏			
@@ -426,10 +454,16 @@ HTTP请求的 header中携带 Authorization, 值为登录用户ID
       		是
       e. HTTP方法：DELETE
       f. 请求参数
+          作品的work_id
       g. 返回HTTPP状态码。
          成功： 200
          失败： 400
       h. 返回内容
+        {
+            "status":"000",
+            "message":null,
+            "result": 
+        }
 
 
   （3）子功能点：评论作品			
@@ -440,10 +474,18 @@ HTTP请求的 header中携带 Authorization, 值为登录用户ID
       		是
       e. HTTP方法
       f. 请求参数
+          作品的work_id
+          评论时间
+          评论详情
       g. 返回HTTPP状态码。
          成功： 200
          失败： 400
       h. 返回内容
+        {
+            "status":"000",
+            "message":null,
+            "result": 
+        }
 
 
   （4）子功能点：喜欢				
@@ -455,10 +497,16 @@ HTTP请求的 header中携带 Authorization, 值为登录用户ID
       e. HTTP方法：
       		POST
       f. 请求参数
+          作品的work_id
       g. 返回HTTPP状态码。
          成功： 200
          失败： 400
       h. 返回内容
+        {
+            "status":"000",
+            "message":null,
+            "result": 
+        }
 
 
   （5）子功能点：取消喜欢		
@@ -470,10 +518,16 @@ HTTP请求的 header中携带 Authorization, 值为登录用户ID
       e. HTTP方法：
       		DELETE
       f. 请求参数
+          作品的work_id
       g. 返回HTTPP状态码。
          成功： 200
          失败： 400
       h. 返回内容
+        {
+            "status":"000",
+            "message":null,
+            "result": 
+        }
 
 
 3.5 查看用户
@@ -484,12 +538,25 @@ HTTP请求的 header中携带 Authorization, 值为登录用户ID
       c. 是否需要登录：
       		是
       e. HTTP方法
+          GET
       f. 请求参数
+          被查询用户的user_id
       g. 返回HTTPP状态码。
          成功： 200
          失败： 400
       h. 返回内容
-
+          {
+              "status":"000",
+              "message":null,
+              "result": 
+              {
+                  "ID"(Long)          // 用户id  
+                  "url"               // 用户头像url
+                  "author"(String)    // 用户昵称
+                  "work_name"(String) // 用户作品数量
+              }
+          }
+        
 
   （2）子功能点：浏览用户发布的作品		 	
       a. 略
@@ -498,11 +565,38 @@ HTTP请求的 header中携带 Authorization, 值为登录用户ID
       c. 是否需要登录：
       		是
       e. HTTP方法
+          GET
       f. 请求参数
+          被查询用户的user_id
       g. 返回HTTPP状态码。
          成功： 200
          失败： 400
       h. 返回内容
+          {
+              "status":"000",
+              "message":null,
+              "resultList": 
+              [ 
+                  // 第一条作品
+                  {
+                      "ID"(Long)          // 作品id  
+                      "url"               // 作品url
+                      "Describtion"(String)    // 作品描述
+                      "likeList":   // 被赞的用户昵称列表
+                      [
+                        aliasName_1, // 最近一个赞的用户
+                        aliasName_2, // 倒数第二个赞的用户
+                        ...
+                      ]
+                      "collectList":   // 被收藏的用户昵称列表
+                      [
+                        aliasName_1, // 最近一个收藏的用户
+                        aliasName_2, // 倒数第二个收藏的用户
+                        ...
+                      ]
+                  }
+              ]
+          }
 
 
   （3）子功能点：浏览用户收藏的作品		 	
@@ -513,10 +607,36 @@ HTTP请求的 header中携带 Authorization, 值为登录用户ID
       		是
       e. HTTP方法
       f. 请求参数
+          用户ID user_id
       g. 返回HTTPP状态码。
          成功： 200
          失败： 400
       h. 返回内容
+          {   // 该用户的收藏的作品列表
+              "status":"000",
+              "message":null,
+              "resultList": 
+              [ 
+                  // 第一条作品
+                  {
+                      "ID"(Long)          // 作品id  
+                      "url"               // 作品url
+                      "Describtion"(String)    // 作品描述
+                      "likeList":   // 被赞的用户昵称列表
+                      [
+                        aliasName_1, // 最近一个赞的用户
+                        aliasName_2, // 倒数第二个赞的用户
+                        ...
+                      ]
+                      "collectList":   // 被收藏的用户昵称列表
+                      [
+                        aliasName_1, // 最近一个收藏的用户
+                        aliasName_2, // 倒数第二个收藏的用户
+                        ...
+                      ]
+                  }
+              ]
+          }
 
 
   （4）子功能点：浏览用户喜欢的作品		 	
@@ -527,7 +647,33 @@ HTTP请求的 header中携带 Authorization, 值为登录用户ID
       		是
       e. HTTP方法
       f. 请求参数
+          用户ID user_id
       g. 返回HTTPP状态码。
          成功： 200
          失败： 400
       h. 返回内容
+        {   // 该用户的喜欢的作品列表
+              "status":"000",
+              "message":null,
+              "resultList": 
+              [ 
+                  // 第一条作品
+                  {
+                      "ID"(Long)          // 作品id  
+                      "url"               // 作品url
+                      "Describtion"(String)    // 作品描述
+                      "likeList":   // 被赞的用户昵称列表
+                      [
+                        aliasName_1, // 最近一个赞的用户
+                        aliasName_2, // 倒数第二个赞的用户
+                        ...
+                      ]
+                      "collectList":   // 被收藏的用户昵称列表
+                      [
+                        aliasName_1, // 最近一个收藏的用户
+                        aliasName_2, // 倒数第二个收藏的用户
+                        ...
+                      ]
+                  }
+              ]
+          }
