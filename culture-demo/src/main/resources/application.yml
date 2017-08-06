@@ -1,0 +1,33 @@
+server:
+  port: 8080
+  contextPath: /api-service
+  servlet-path: /services
+
+management:
+  security:
+    enabled: false
+
+spring:
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    serialization:
+      write_dates_as_timestamps: false
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/culture
+    username: root
+    password: root
+    driverClassName: com.mysql.jdbc.Driver
+    testWhileIdle: true
+    validationQuery: SELECT 1
+  jpa:
+    hibernate:
+      ddl-auto: update
+      dialect: org.hibernate.dialect.MySQL5Dialect
+    show-sql: true
+    generate-ddl: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+        hbm2ddl:
+          auto: update
