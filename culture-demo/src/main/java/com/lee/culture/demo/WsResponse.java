@@ -8,17 +8,24 @@ import java.util.List;
 public class WsResponse<T> {
 
     private MessageCode status;
-    private List<String> messages;
+    private String message;
     private T result;
 
     public WsResponse() {
-        messages = new ArrayList<>();
     }
 
     public WsResponse(MessageCode status, T result) {
-        messages = new ArrayList<>();
         this.status = status;
+        message = status.getMsg();
         this.result = result;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public MessageCode getStatus() {
@@ -29,14 +36,6 @@ public class WsResponse<T> {
         this.status = status;
     }
 
-    public List<String> getMessages() {
-        return messages;
-    }
-
-    public void setMessages(List<String> messages) {
-        this.messages = messages;
-    }
-
     public T getResult() {
         return result;
     }
@@ -45,31 +44,13 @@ public class WsResponse<T> {
         this.result = result;
     }
 
-    @Override
-    public String toString() {
-        return "error code:" + status + " result:" + result;
-    }
-
     public static WsResponse failure(String msg) {
         WsResponse resp = new WsResponse();
         resp.status = MessageCode.COMMON_FAILURE;
-        resp.getMessages().add(msg);
-        return resp;
-    }
+        if (StringUtils.isBlank(msg)) {
 
-    public static WsResponse failure(MessageCode messageCode) {
-        WsResponse resp = new WsResponse();
-        resp.status = messageCode;
-        resp.getMessages().add(messageCode.getMsg());
-        return resp;
-    }
-
-    public static WsResponse failure(MessageCode messageCode, String message) {
-        WsResponse resp = new WsResponse();
-        resp.status = messageCode;
-        resp.getMessages().add(messageCode.getMsg());
-        if (StringUtils.isNotBlank(message)) {
-            resp.getMessages().add(message);
+        } else {
+            resp.message = msg;
         }
         return resp;
     }
@@ -77,14 +58,12 @@ public class WsResponse<T> {
     public static WsResponse success() {
         WsResponse resp = new WsResponse();
         resp.status = MessageCode.COMMON_SUCCESS;
-        resp.getMessages().add(MessageCode.COMMON_SUCCESS.getMsg());
         return resp;
     }
 
     public static <K> WsResponse<K> success(K t) {
         WsResponse<K> resp = new WsResponse<>();
         resp.status = MessageCode.COMMON_SUCCESS;
-        resp.getMessages().add(MessageCode.COMMON_SUCCESS.getMsg());
         resp.result = t;
 
         return resp;
@@ -98,8 +77,8 @@ public class WsResponse<T> {
      */
     public static boolean isWsResponseJson(String json) {
         if (json != null && json.indexOf("\"status\":") != -1
-                && json.indexOf("\"messages\":") != -1
-                && json.indexOf("\"data\":") != -1) {
+                && json.indexOf("\"message\":") != -1
+                && json.indexOf("\"result\":") != -1) {
             return true;
         } else {
             return false;

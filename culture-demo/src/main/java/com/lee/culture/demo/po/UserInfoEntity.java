@@ -1,5 +1,8 @@
 package com.lee.culture.demo.po;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -12,6 +15,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "user_info", schema = "culture")
+@JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class UserInfoEntity {
     private Integer id;
     private String phone;
@@ -21,11 +25,22 @@ public class UserInfoEntity {
     private Date registerTime;
     private String profilePath;
 
+    private Integer gender;
+
     private Set<WorkInfoEntity> workInfos;
 
     private Set<LikeInfoEntity> likeInfos;
 
     private Set<CommentInfoEntity> comments;
+
+    @Column
+    public Integer getGender() {
+        return gender;
+    }
+
+    public void setGender(Integer gender) {
+        this.gender = gender;
+    }
 
     @OneToMany(mappedBy = "user")
     public Set<LikeInfoEntity> getLikeInfos() {
@@ -55,6 +70,7 @@ public class UserInfoEntity {
     }
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     public Integer getId() {
         return id;

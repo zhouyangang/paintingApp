@@ -1,5 +1,7 @@
 package com.lee.culture.demo.po;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -11,6 +13,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "comment_info", schema = "culture")
+@JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class CommentInfoEntity {
     private Integer id;
     private UserInfoEntity user;

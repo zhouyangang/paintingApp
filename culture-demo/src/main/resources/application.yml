@@ -1,7 +1,7 @@
 server:
   port: 8080
-  contextPath: /api-service
-  servlet-path: /services
+#  contextPath: /api-service
+  servlet-path: /api
 
 management:
   security:
@@ -31,3 +31,12 @@ spring:
         dialect: org.hibernate.dialect.MySQL5Dialect
         hbm2ddl:
           auto: update
+
+oss:
+  upload-path: file://${user.home}/culture-demo/upload-path
+  access-key:
+  access-id:
+  bucket-name:
+    profile: profiles
+    work: works
+  endpoint: http://oss-cn-qingdao.aliyuncs.com

@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.schema.ModelRef;
@@ -27,7 +29,7 @@ import static springfox.documentation.builders.RequestHandlerSelectors.basePacka
 @EntityScan(basePackages="com.lee.culture.demo.po")
 @EnableJpaRepositories(basePackages= "com.lee.culture.demo.dao")
 @EnableTransactionManagement
-public class Application {
+public class Application extends WebMvcConfigurerAdapter {
 
 
 	public static final String SWAGGER_SCAN_BASE_PACKAGE = "com.lee.culture.demo.api";
@@ -67,7 +69,10 @@ public class Application {
 				.build();
 	}
 
-
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		registry.addInterceptor(new AuthorizationInterceptor()).addPathPatterns("/**");
+	}
 
 	public static void main(String[] args) {
 

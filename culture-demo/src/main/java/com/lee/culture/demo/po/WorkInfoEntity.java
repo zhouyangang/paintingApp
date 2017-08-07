@@ -1,5 +1,7 @@
 package com.lee.culture.demo.po;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import javax.persistence.*;
 import javax.xml.stream.events.Comment;
 import java.sql.Timestamp;
@@ -12,6 +14,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "work_info", schema = "culture")
+@JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class WorkInfoEntity {
     private Integer id;
     private String workName;
@@ -44,6 +47,7 @@ public class WorkInfoEntity {
 
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer getId() {
         return id;
     }
